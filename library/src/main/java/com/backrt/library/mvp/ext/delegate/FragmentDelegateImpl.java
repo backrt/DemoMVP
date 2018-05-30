@@ -2,33 +2,32 @@ package com.backrt.library.mvp.ext.delegate;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.View;
 
 import com.backrt.library.mvp.MVPPresenter;
 import com.backrt.library.mvp.MVPView;
 
 /**
- * Author：lhb on 2018/5/30 13:22
+ * Author：lhb on 2018/5/30 16:34
  * Mail：lihaibo@znds.com
  */
 
-public class ActivityMVPDelegateImpl<V extends MVPView, P extends MVPPresenter<V>> implements ActivityMVPDetegate {
-
-    protected Activity activity;
+public class FragmentDelegateImpl<V extends MVPView, P extends MVPPresenter<V>> implements FragmentDelegate<V, P> {
     private MVPDelegateCallback<V, P> delegateCallback;
+    protected Fragment fragment;
 
-    public ActivityMVPDelegateImpl(Activity activity, MVPDelegateCallback<V, P> delegateCallback) {
-        this.activity = activity;
+    public FragmentDelegateImpl(MVPDelegateCallback<V, P> delegateCallback, Fragment fragment) {
         this.delegateCallback = delegateCallback;
+        this.fragment = fragment;
     }
 
-
     @Override
-    public void onCreate(Bundle bundle) {
+    public void onCreate(Bundle saved) {
         P presenter = this.delegateCallback.createPresenter();
         if (null != presenter) {
             this.delegateCallback.setPresenter(presenter);
-            V view = this.getMvpView();
-            presenter.attachView(view);
         }
     }
 
@@ -48,10 +47,21 @@ public class ActivityMVPDelegateImpl<V extends MVPView, P extends MVPPresenter<V
         return view;
     }
 
+
     @Override
     public void onDestroy() {
-        getPresenter().detachView();
         getPresenter().destory();
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        P presenter = getPresenter();
+        presenter.attachView(getMvpView());
+    }
+
+    @Override
+    public void onDestroyView() {
+
     }
 
     @Override
@@ -75,22 +85,22 @@ public class ActivityMVPDelegateImpl<V extends MVPView, P extends MVPPresenter<V
     }
 
     @Override
-    public void onRestart() {
+    public void onActivityCreated(Bundle savedInstanceState) {
 
     }
 
     @Override
-    public void onContentChanged() {
+    public void onAttach(Activity activity) {
 
+    }
+
+    @Override
+    public void onDetach() {
+        getPresenter().detachView();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-
-    }
-
-    @Override
-    public void onPostCreate(Bundle savedInstanceState) {
 
     }
 }
