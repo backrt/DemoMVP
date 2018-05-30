@@ -1,4 +1,4 @@
-package com.backrt.library.mvp.ext.delegate;
+package com.backrt.library.mvp.base.delegate;
 
 import com.backrt.library.mvp.MVPPresenter;
 import com.backrt.library.mvp.MVPView;

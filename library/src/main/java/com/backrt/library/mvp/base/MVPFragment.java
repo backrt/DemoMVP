@@ -1,57 +1,52 @@
-package com.backrt.library.mvp.ext;
+package com.backrt.library.mvp.base;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.backrt.library.mvp.MVPPresenter;
 import com.backrt.library.mvp.MVPView;
-import com.backrt.library.mvp.ext.delegate.FragmentDelegate;
-import com.backrt.library.mvp.ext.delegate.FragmentDelegateImpl;
-import com.backrt.library.mvp.ext.delegate.MVPDelegateCallback;
+import com.backrt.library.mvp.base.delegate.FragmentDelegate;
+import com.backrt.library.mvp.base.delegate.FragmentDelegateImpl;
+import com.backrt.library.mvp.base.delegate.MVPDelegateCallback;
 
 /**
- * Author：lhb on 2018/5/30 16:47
+ * Author：lhb on 2018/5/30 16:41
  * Mail：lihaibo@znds.com
  */
 
-public abstract class MVPDialogFragment<V extends MVPView, P extends MVPPresenter<V>> extends DialogFragment
-        implements MVPDelegateCallback<V, P>, MVPView {
+public abstract class MVPFragment<V extends MVPView, P extends MVPPresenter<V>> extends Fragment
+        implements MVPView, MVPDelegateCallback<V, P> {
 
     protected FragmentDelegate<V, P> mvpDelegate;
-
     protected P presenter;
 
     public abstract P createPresenter();
 
-    @NonNull
-    protected FragmentDelegate<V, P> getMvpDelegate() {
-        if (mvpDelegate == null) {
-            mvpDelegate = new FragmentDelegateImpl<>(this, this);
-        }
-
-        return mvpDelegate;
-    }
-
-    @NonNull
     @Override
     public P getPresenter() {
         return presenter;
     }
 
     @Override
-    public void setPresenter(@NonNull P presenter) {
+    public void setPresenter(P presenter) {
         this.presenter = presenter;
     }
 
-    @NonNull
     @Override
     public V getMvpView() {
         return (V) this;
+    }
+
+    @NonNull
+    protected FragmentDelegate<V, P> getMvpDelegate() {
+        if (mvpDelegate == null) {
+            mvpDelegate = new FragmentDelegateImpl<>(this, this);
+        }
+        return mvpDelegate;
     }
 
     @Override
@@ -62,11 +57,6 @@ public abstract class MVPDialogFragment<V extends MVPView, P extends MVPPresente
 
     @Override
     public void onDestroyView() {
-        Dialog dialog = getDialog();
-        // Handles https://code.google.com/p/android/issues/detail?id=17423
-        if (dialog != null && getRetainInstance()) {
-            dialog.setDismissMessage(null);
-        }
         super.onDestroyView();
         getMvpDelegate().onDestroyView();
     }

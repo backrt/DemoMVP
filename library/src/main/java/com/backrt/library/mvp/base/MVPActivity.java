@@ -1,4 +1,4 @@
-package com.backrt.library.mvp.ext;
+package com.backrt.library.mvp.base;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -6,9 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.backrt.library.mvp.MVPPresenter;
 import com.backrt.library.mvp.MVPView;
-import com.backrt.library.mvp.ext.delegate.ActivityMVPDelegateImpl;
-import com.backrt.library.mvp.ext.delegate.ActivityMVPDetegate;
-import com.backrt.library.mvp.ext.delegate.MVPDelegateCallback;
+import com.backrt.library.mvp.base.delegate.ActivityMVPDelegateImpl;
+import com.backrt.library.mvp.base.delegate.ActivityMVPDetegate;
+import com.backrt.library.mvp.base.delegate.MVPDelegateCallback;
 
 /**
  * Author：lhb on 2018/5/30 16:12
