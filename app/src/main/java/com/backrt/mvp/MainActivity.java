@@ -1,23 +1,38 @@
 package com.backrt.mvp;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+import com.backrt.mvp.demo.DemoActivity;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        initView();
     }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
+    private void initView() {
+        View v = this.findViewById(R.id.demo01);
+        v.setOnClickListener(this);
     }
 
+
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+
+            case R.id.demo01:
+                Intent intent = new Intent();
+                intent.setClass(this, DemoActivity.class);
+                startActivity(intent);
+                break;
+        }
     }
 }
